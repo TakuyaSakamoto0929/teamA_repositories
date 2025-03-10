@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>社員情報登録確認画面</title>
+</head>
+<body>
+	<form action="/createConfirm" method="post">
+			社員名<input type="text" name="name" th:value="${name}" readonly><br>
+			年齢<input type="number" name="age" th:value="${age}" readonly><br>
+			パスワード<input type="password" name="pass" th:value="${pass}" readonly><br>
+			パスワード確認<input type="password" name="pass_again" 	th:value="${pass}" readonly><br>
+			
+		<input type="submit" onclick="location.href='confirm'" value="登録する">
+		<input type="button" onclick="history.back()" value="戻る">
+	</form>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<!--	ヘッダー-->
+	<div th:insert="header :: header"></div>
+	
+<!--	ページの固有コンテンツ-->
+	<main th:fragment="main">
+	</main>
+<!--	フッター-->
+	<div th:insert="footer :: footer"></div>
+	
+<!--	th:insert: -->
+<!--	➡他のtemplateやファイルの指定部分を現在のテンプレートに挿入する-->
+	
+<!--	header :: header:-->
+<!--	header 別のテンプレートファイルの名前(header.html)-->
+<!--	::header header.html内の<header>タグを指定-->
+</body>
+</html>
