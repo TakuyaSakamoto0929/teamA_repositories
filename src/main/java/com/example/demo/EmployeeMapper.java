@@ -8,17 +8,24 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface EmployeeMapper {
-	 @Select("<script>" +
-	            "SELECT * FROM kensyuEmployee WHERE 1=1" +
-	            "<if test='name != null'> AND name LIKE CONCAT('%', #{name}, '%')</if>" +
-	            "<if test='ageFrom != null'> AND age >= #{ageFrom}</if>" +
-	            "<if test='ageTo != null'> AND age <= #{ageTo}</if>" +
-	            "<if test='startDate != null'> AND start_date >= #{startDate}</if>" +
-	            "<if test='endDate != null'> AND end_date <= #{endDate}</if>" +
-	            "</script>")
-	    List<Employee> searchEmployees(@Param("name") String name,
-	                                   @Param("ageFrom") Integer ageFrom,
-	                                   @Param("ageTo") Integer ageTo,
-	                                   @Param("startDate") String startDate,
-	                                   @Param("endDate") String endDate);
-	}
+
+    // 全件取得
+    @Select("SELECT id, name, age, DATE_FORMAT(startDate, '%Y/%m/%d') AS startDate, DATE_FORMAT(endDate, '%Y/%m/%d') AS endDate FROM kensakukadai.kensyuEmployee")
+    List<Employee> findAll();
+
+    // ID検索
+    @Select("SELECT id, name, age, DATE_FORMAT(startDate, '%Y/%m/%d') AS startDate, DATE_FORMAT(endDate, '%Y/%m/%d') AS endDate FROM kensakukadai.kensyuEmployee WHERE id = #{id}")
+    Employee findById(@Param("id") int id);
+
+    // 名前検索（部分一致）
+    @Select("SELECT id, name, age, DATE_FORMAT(startDate, '%Y/%m/%d') AS startDate, DATE_FORMAT(endDate, '%Y/%m/%d') AS endDate FROM kensakukadai.kensyuEmployee WHERE name LIKE CONCAT('%', #{name}, '%')")
+    List<Employee> findByName(@Param("name") String name);
+
+    // 年齢範囲検索
+    @Select("SELECT id, name, age, DATE_FORMAT(startDate, '%Y/%m/%d') AS startDate, DATE_FORMAT(endDate, '%Y/%m/%d') AS endDate FROM kensakukadai.kensyuEmployee WHERE age BETWEEN #{minAge} AND #{maxAge}")
+    List<Employee> findByAgeRange(@Param("minAge") int minAge, @Param("maxAge") int maxAge);
+
+    // 期間検索（開始日 - 終了日）
+    @Select("SELECT id, name, age, DATE_FORMAT(startDate, '%Y/%m/%d') AS startDate, DATE_FORMAT(endDate, '%Y/%m/%d') AS endDate FROM kensakukadai.kensyuEmployee WHERE startDate >= #{startDate} AND endDate <= #{endDate}")
+    List<Employee> findByDateRange(@Param("startDate") String startDate, @Param("endDate") String endDate);
+}

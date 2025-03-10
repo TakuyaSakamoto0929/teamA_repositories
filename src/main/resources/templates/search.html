@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>社員検索</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // 検索ボタンクリック時の処理
+            $("#searchBtn").click(function() {
+                let name = $("#name").val();
+                let minAge = $("#minAge").val();
+                let maxAge = $("#maxAge").val();
+                let startDate = $("#startDate").val();
+                let endDate = $("#endDate").val();
+
+                let queryParams = [];
+                if (name) queryParams.push(`name=${name}`);
+                if (minAge && maxAge) queryParams.push(`minAge=${minAge}&maxAge=${maxAge}`);
+                if (startDate && endDate) queryParams.push(`startDate=${startDate}&endDate=${endDate}`);
+                
+                let queryString = queryParams.length > 0 ? "?" + queryParams.join("&") : "";
+
+                $.get("/employees/search" + queryString, function(data) {
+                    let tableContent = "";
+                    if (data.length > 0) {
+                        data.forEach(employee => {
+                            tableContent += `
+                                <tr>
+                                    <td><a href="/employee/edit/${employee.id}">${employee.id}</a></td>
+                                    <td>${employee.name}</td>
+                                    <td>${employee.age}</td>
+                                    <td>${employee.startDate}</td>
+                                    <td>${employee.endDate}</td>
+                                </tr>
+                            `;
+                        });
+                        $("#searchResults tbody").html(tableContent);
+                        $("#resultCount").text(`検索結果: ${data.length} 件`);
+                    } else {
+                        $("#searchResults tbody").html("<tr><td colspan='5'>データが見つかりません</td></tr>");
+                        $("#resultCount").text("検索結果: 0 件");
+                    }
+                }).fail(function() {
+                    alert("エラーが発生しました。");
+                });
+            });
+
+            // クリアボタンの処理
+            $("#clearBtn").click(function() {
+                $("#name, #minAge, #maxAge, #startDate, #endDate").val("");
+                $("#searchResults tbody").html("");
+                $("#resultCount").text("検索結果: 0 件");
+            });
+        });
+    </script>
+</head>
+<body>
+    <h2>社員検索</h2>
+
+    <form>
+        <label>社員名: </label>
+        <input type="text" id="name"><br>
+
+        <label>年齢: </label>
+        <input type="number" id="minAge" min="0"> 〜 
+        <input type="number" id="maxAge" min="0"><br>
+
+        <label>開始日: </label>
+        <input type="date" id="startDate"><br>
+
+        <label>終了日: </label>
+        <input type="date" id="endDate"><br>
+
+        <button type="button" id="searchBtn">検索</button>
+        <button type="button" id="clearBtn">クリア</button>
+    </form>
+
+    <h3 id="resultCount">検索結果: 0 件</h3>
+
+    <table border="1" id="searchResults">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>名前</th>
+                <th>年齢</th>
+                <th>開始日</th>
+                <th>終了日</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- 検索結果がここに表示される -->
+        </tbody>
+    </table>
+</body>
+</html>
