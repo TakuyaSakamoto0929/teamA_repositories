@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	
+	<form action="/selectAll" method="get">
+		<input type="button" onclick="location.href='/test'" value="登録">
+		<input type="button" onclick="location.href='/test'" value="メニュー"><br>
+			
+	      <label>社員:</label>
+	      <input type="text" name="name"><br>
+
+	      <label>年齢:</label>
+	      <input type="text" name="minAge" min="0"> 〜 
+	      <input type="text" name="maxAge" min="0"><br>
+
+	      <label>開始日:</label>
+	      <input type="date" name="startDateFrom"> 〜 
+	      <input type="date" name="startDateTo"><br>
+
+	      <label>終了日:</label>
+	      <input type="date" name="endDateFrom"> 〜 
+	      <input type="date" name="endDateTo"><br>
+
+	      <button type="submit">検索</button>
+	      <button type="reset">クリア</button>
+		  
+	  </form>
+
+	  <form action="/test" method="get"> 
+	    <div th:if="${searched}">
+	      <div th:if="${kensyuEmployee != null and #lists.isEmpty(kensyuEmployee)}">
+	          該当データがありません。
+	      </div>
+
+	      <div th:if="${kensyuEmployee != null and !#lists.isEmpty(kensyuEmployee)}">
+	          <p th:text="${kensyuEmployee.size()} + ' 件'"></p>
+
+	          <table border="1">
+	              <tr>
+	                  <th>選択</th>
+	                  <th>ID</th>
+	                  <th>名前</th>
+	                  <th>年齢</th>
+	                  <th>開始日</th>
+	                  <th>終了日</th>
+	              </tr>
+	              <tr th:each="employee : ${kensyuEmployee}">
+	                  <td>
+	                      <input type="checkbox" name="ids" th:value="${employee.id}">
+	                  </td>
+	                  <td>
+	                      <!-- IDを更新リンクにする -->
+	                      <a th:href="@{/test(id=${employee.id})}" th:text="${employee.id}"></a>
+	                  </td>
+	                  <td th:text="${employee.name}"></td>
+	                  <td th:text="${employee.age}"></td>
+	                  <td th:text="${employee.startDate}"></td>
+	                  <td th:text="${employee.endDate}"></td>
+	              </tr>
+	          </table>
+
+	          <br>
+	          <button type="submit">削除</button> 
+	      </div>
+	    </div>
+	  </form>
+
+	  <div th:if="${errorMessage != null}">
+	    <p th:text="${errorMessage}"></p>
+	  </div>
+</body>
+</html>

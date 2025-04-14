@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>テスト移動用ページです</h1>
+	<h1>削除対象ID一覧</h1>
+
+	   <div th:if="${selectedIds != null}">
+	       <ul>
+	           <li th:each="id : ${selectedIds}" th:text="${id}"></li>
+	       </ul>
+	   </div>
+
+	   <div th:if="${selectedIds == null}">
+	       <p>削除対象が選択されていません。</p>
+	   </div>
+</body>
+</html>
