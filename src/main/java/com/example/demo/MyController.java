@@ -3,6 +3,7 @@ package com.example.demo;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -13,7 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @ControllerAdvice
 public class MyController {
-	
+	@Autowired
+	private Employee service;
 	
 	@GetMapping("/main")
 	public String main(Model model) {
@@ -39,10 +41,12 @@ public class MyController {
 		@RequestParam("name") String name,
 		@RequestParam("age") String age,
 		@RequestParam("pass") String pass
+//		@RequestParam("pass_again") String passAgain
 		) {
 		m.addAttribute("name" ,name);
 		m.addAttribute("age" ,age);
 		m.addAttribute("pass" ,pass);
+//		m.addAttribute("pass_again",passAgain);
 		return "confirm";
 	}
 	
@@ -53,12 +57,38 @@ public class MyController {
 	        Model m,
 	        @RequestParam("name") String name,
 	        @RequestParam("age") String age,
-	        @RequestParam("pass") String pass
+	        @RequestParam("pass") String pass,
+	        @RequestParam("pass_again") String passAgain
 	) {
 	    // 確認処理
+	    if (!pass.equals(passAgain)) {
+	        m.addAttribute("errorMessage", "パスワードが一致していません。");
+	        return "registration";
+	    	//表示させたい文字がサイト上で表示されない
+	    }
+	    
 	    Employee employee = new Employee(name, Integer.parseInt(age), pass);
 	    m.addAttribute("employee", employee);
-	    return "createConfirm";
+	    return "createConfirm";	    
+	    }
+	
+	@PostMapping("/finish") 
+	public String finish(
+	        Model m,
+	        @RequestParam("name") String name,
+	        @RequestParam("age") String age,
+	        @RequestParam("pass") String pass,
+	        @RequestParam("pass_again") String passAgain
+	) {
+	    //登録
+		Employee employee = new Employee(name, Integer.parseInt(age), pass);
+		service.insert(employee);
+		//serviceクラスが無いからinsertがエラーになる
+		
+//	    Employee employee = new Employee(name, Integer.parseInt(age), pass);
+	    m.addAttribute("employee", employee);
+	    return "finish";
+	    }
 	}
 
-}
+

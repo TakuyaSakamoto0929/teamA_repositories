@@ -2,6 +2,6 @@ package com.example.demo;
 
 //@Mapper
 //public class Mapper {
-//	@Insert("INSERT INTO kensyuEmployee VALUES(#{name},#{age},#{pass})")
-//	void insert (Mapper kensyuEmployee);
+//	@Insert("INSERT INTO  employeeVALUES(#{name},#{age},#{pass})")
+//	void insert (Employee employee );
 //}
