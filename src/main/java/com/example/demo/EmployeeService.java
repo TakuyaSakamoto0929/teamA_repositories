@@ -1,12 +1,12 @@
 package com.example.demo;
 
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
-public class Service {
+public class EmployeeService {
 	@Autowired
-	private Mapper mapper;
+	private EmployeeMapper mapper;
 	
 //	public void insert(Employee employee) {
 //		mapper.insert(Employee);

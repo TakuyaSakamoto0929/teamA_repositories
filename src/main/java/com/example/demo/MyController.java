@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @ControllerAdvice
 public class MyController {
 	@Autowired
-	private Employee service;
+	private Employee EmployeeService;
 	
 	@GetMapping("/main")
 	public String main(Model model) {
@@ -34,7 +34,7 @@ public class MyController {
 		return "registration";
 		
 	}
-	//employeeControllerコピペしたもの↓　コピペしてテストするのも良いかもとのこと
+	
 	@PostMapping("/registration")
 	public String registration(
 		Model m,
@@ -52,7 +52,7 @@ public class MyController {
 	
 	//登録処理
 	
-	@PostMapping("/createConfirm")  // こちらはそのままでOK
+	@PostMapping("/createConfirm") 
 	public String createConfirm(
 	        Model m,
 	        @RequestParam("name") String name,
@@ -64,13 +64,12 @@ public class MyController {
 	    if (!pass.equals(passAgain)) {
 	        m.addAttribute("errorMessage", "パスワードが一致していません。");
 	        return "registration";
-	    	//表示させたい文字がサイト上で表示されない
 	    }
 	    
 	    Employee employee = new Employee(name, Integer.parseInt(age), pass);
 	    m.addAttribute("employee", employee);
 	    return "createConfirm";	    
-	    }
+	    }//これなんだっけ
 	
 	@PostMapping("/finish") 
 	public String finish(
@@ -82,7 +81,7 @@ public class MyController {
 	) {
 	    //登録
 		Employee employee = new Employee(name, Integer.parseInt(age), pass);
-		service.insert(employee);
+//		service.insert(employee);
 		//serviceクラスが無いからinsertがエラーになる
 		
 //	    Employee employee = new Employee(name, Integer.parseInt(age), pass);
