@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @ControllerAdvice
 public class MyController {
 	@Autowired
-	private Employee EmployeeService;
+	private EmployeeService employeeService;
 	
 	@GetMapping("/main")
 	public String main(Model model) {
